@@ -11,33 +11,42 @@ import fullcontrol as fc
 # printer/gcode parameters
 
 design_name = 'my_design'
-nozzle_temp = 210
+nozzle_temp = 220
 bed_temp = 40
 print_speed = 1000
 printer_name= 'ender_3' # generic / ultimaker2plus / prusa_i3 / ender_3 / cr_10 / bambulab_x1 / toolchanger_T0 / prusa_i3
 
 # design parameters
 
-EW = 0.8 # extrusion width
+EW = 0.4 # extrusion width
 EH = 0.3 # extrusion height (and layer height)
-initial_z = EH*0.6 # initial nozzle position is set to 0.6x the extrusion height to get a bit of 'squish' for good bed adhesion
-layers = 50
+initial_z = EH*0.3 # initial nozzle position is set to 0.6x the extrusion height to get a bit of 'squish' for good bed adhesion
+layers = 25 # number of layers
 # generate the design (make sure you've run the above cells before running this cell)
 
+
+# there has to be a way in fulcontrol to darw parmiter walls (similar to tge way fc.rectangleXY works, but increasing parameter size by EW each time)
+# Here we have to just make sure we are subtracting EW from the lower cordinates and adding it to the higher cordinates
 steps = []
-for layer in range(layers):
-  steps.append(fc.Point(x=50, y=50, z=initial_z+layer*EH))
-  steps.append(fc.Point(x=100, y=50, z=initial_z+layer*EH))
-  steps.append(fc.Point(x=100, y=100, z=initial_z+layer*EH))
-  steps.append(fc.Point(x=50, y=100, z=initial_z+layer*EH))
-  steps.append(fc.Point(x=50, y=50, z=initial_z+layer*EH))
+# steps.append(fc.Point(x=75, y=75, z=initial_z))
+# steps.append(fc.Point(x=100, y=75, z=initial_z))
+# steps.append(fc.Point(x=100, y=100, z=initial_z))
+# steps.append(fc.Point(x=75, y=100, z=initial_z))
+for layer in range(1, layers):
+  for wall in range(4):
+    steps.append(fc.Point(x=75-wall*EW, y=75-wall*EW, z=initial_z+layer*EH))
+    steps.append(fc.Point(x=75-wall*EW, y=75-wall*EW, z=initial_z+layer*EH))
+    steps.append(fc.Point(x=100+wall*EW, y=75-wall*EW, z=initial_z+layer*EH))
+    steps.append(fc.Point(x=100+wall*EW, y=100+wall*EW, z=initial_z+layer*EH))
+    steps.append(fc.Point(x=75-wall*EW, y=100+wall*EW, z=initial_z+layer*EH))
+    steps.append(fc.Point(x=75-wall*EW, y=75-wall*EW, z=initial_z+layer*EH))
   
 # instead of the above for-loop code, you can create the exact same design using built-in FullControl functions (uncomment the next two lines):
-# rectangle_steps = fc.rectangleXY(fc.Point(x=50, y=50, z=initial_z), 50, 50)
+# rectangle_steps = fc.rectangleXY(fc.Point(x=75, y=75, z=initial_z), 75, 75)
 # steps = fc.move(rectangle_steps, fc.Vector(z=EH), copy=True, copy_quantity=layers)
 # preview the design
 
-fc.transform(steps, 'plot')
+plot_data = fc.transform(steps, 'plot')
 # uncomment the next line to create a neat preview (click the top-left button in the plot for a .png file) - post and tag @FullControlXYZ :)
 # fc.transform(steps, 'plot', fc.PlotControls(neat_for_publishing=True)) 
 
