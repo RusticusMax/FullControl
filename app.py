@@ -20,12 +20,11 @@ printer_name= 'ender_3' # generic / ultimaker2plus / prusa_i3 / ender_3 / cr_10 
 
 EW = 0.4 # extrusion width
 EH = 0.3 # extrusion height (and layer height)
-initial_z = EH*0.3 # initial nozzle position is set to 0.6x the extrusion height to get a bit of 'squish' for good bed adhesion
+initial_z = EH*0.4 # initial nozzle position is set to 0.6x the extrusion height to get a bit of 'squish' for good bed adhesion
 layers = 25 # number of layers
-# generate the design (make sure you've run the above cells before running this cell)
 
 
-# there has to be a way in fulcontrol to darw parmiter walls (similar to tge way fc.rectangleXY works, but increasing parameter size by EW each time)
+# MLW There has to be a way in fulcontrol to darw parmiter walls (similar to tge way fc.rectangleXY works, but increasing parameter size by EW each time)
 # Here we have to just make sure we are subtracting EW from the lower cordinates and adding it to the higher cordinates
 steps = []
 # steps.append(fc.Point(x=75, y=75, z=initial_z))
