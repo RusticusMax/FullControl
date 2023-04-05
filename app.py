@@ -24,7 +24,7 @@ EH = 0.3 # extrusion height (and layer height)
 initial_z = EH*0.3 # initial nozzle position is set to 0.6x the extrusion height to get a bit of 'squish' for good bed adhesion
 layers = 100 # number of layers]
 wall_cnt = 1 # number of walls
-spin = 1 # angle of rotation of the design
+spin = 0.02 # angle of rotation of the design
 steps = []
 
 # centre_point = fc.Point(x=10, y=10, z=0)
@@ -36,7 +36,7 @@ center_y = 75
 clockwise = True
 for layer in range(layers):
   for wall in range(wall_cnt):
-    for point in fc.polygonXY(fc.Point(x=center_x, y=center_y, z=initial_z+EH*layer), enclosing_radius+EW*wall, start_angle+layer, sides, clockwise):
+    for point in fc.polygonXY(fc.Point(x=center_x, y=center_y, z=initial_z+EH*layer), enclosing_radius+EW*wall, start_angle+layer*spin, sides, clockwise):
       steps.append(point)
   # steps.append(fc.PlotAnnotation(point=steps[-1], label="start/end"))
   # steps.append(fc.PlotAnnotation(point=steps[1], label="first point after start"))
